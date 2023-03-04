@@ -1,2 +1,2 @@
-# RecipeGenerator
-Retreives a random recipe from Spoonacular given user constraints. Uses RapidAPI
+# RecipeGenerato
+Web application that retrieves a random recipe from Spoonacular given user constraints via RapidAPI. Uses Flask to retrieve and process user inputs.
