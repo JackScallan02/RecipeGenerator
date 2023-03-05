@@ -2,8 +2,34 @@
 
 {% block head %}
 <title>Recipe Generator</title>
+
 {% endblock %}
 
 {% block body %}
+<div id="title-div">
+  <h1> Recipe Generator </h1>
+</div>
+<div id="description-div">
+  <h4> Enter in your preferences and a random recipe will be generated!
+</div>
+<form action="/" method="POST">
+  <label>Minimum protein:</label>
+  <input class="input" type="text" name="minProtein" id="minProtein">
 
+  <label>Maximum protein:</label>
+  <input type="text" name="maxProtein" id="maxProtein">
+
+  <label>Minimum calories:</label>
+  <input type="text" name="minCalories" id="minCalories">
+
+  <label>Maximum calories:</label>
+  <input type="text" name="maxCalories" id="maxCalories">
+
+  <label>Maximum sodium:</label>
+  <input type="text" name="maxSodium" id="maxSodium">
+
+  <label>Maximum sugar:</label>
+  <input type="text" name="maxSugar" id="maxSugar">
+  <input type="submit" value="Submit">
+</form>
 {% endblock %}
