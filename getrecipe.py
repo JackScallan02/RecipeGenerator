@@ -1,69 +1,65 @@
 import requests
 import random
-import pandas as pd
+import os
 
-#Uses "Get Recipe Information" and "Search Recipes by Nutrients"
+'''
+This script contains methods for retrieving recipes from Spoonacular.
+From the API, the script uses "Get Recipe Information" and "Search Recipes by Nutrients".
 
-def getValidMacroFromUser(question, constraints):
-    #Prompts user with question and makes sure they enter a number within given constraints
-    macro = input(question)
-    while not macro.isdigit() or int(macro) < constraints[0] or int(macro) > constraints[1]:
-        if not macro.isdigit():
-            print("Please enter an integer.")
+pip install -r requirements.txt to install requirements.
+'''
+
+
+def validateMacros(macros):
+    #Ensures that the user enters in integers.
+    #If the user leaves a field blank, autofill it with a value.
+    valid = True
+    for macro in macros:
+        if macros[macro] == "":
+            if macro in {"minProtein", "minCalories"}:
+                macros[macro] = 0
+            else:
+                macros[macro] = 100000
+        elif macros[macro].isdigit():
+            macros[macro] = int(macros[macro])
         else:
-            print("Please enter a number in a reasonable range (", str(constraints[0]), " to ", str(constraints[1]), ")")
-        macro = input(question)
+            #Not a valid input, return False
+            valid = False
+            macros[macro] = False
 
-    return macro
-
-
-def prompt():
-    #Prompts the user for macro preferences
-    print("Input your following preferences on a serving-basis.")
-
-    proteinMinInput = getValidMacroFromUser("What minimum amount of protein would you like?: ", [0, 100])
-    proteinMaxInput = getValidMacroFromUser("What maximum amount of protein would you like?: ", [0, float("inf")])
-    caloriesMinInput = getValidMacroFromUser("What minimum amount of calories would you like?: ", [0, 4000])
-    caloriesMaxInput = getValidMacroFromUser("What maximum amount of calories would you like?: ", [0, float("inf")])
-    sodiumInput = getValidMacroFromUser("What maximum amount of sodium would you like?: ", [0, float("inf")])
-    sugarInput = getValidMacroFromUser("What maximum amount of sugar would you like?: ", [0, float("inf")])
-
-
-    #proteinMinInput = 0
-    #proteinMaxInput = 70
-    #caloriesMinInput = 300
-    #caloriesMaxInput = 1000
-    #sodiumInput = 800
-    #sugarInput = 40
-
-    #Do error checking
-    return {"minProtein": proteinMinInput, "maxProtein": proteinMaxInput,
-    "minCalories": caloriesMinInput, "maxCalories": caloriesMaxInput,
-    "sodium": sodiumInput, "sugar": sugarInput}
-
+    return valid
 
 
 def getMealID(macros):
-    #Returns the ID of a random meal that fits the macro requirements
-    #Returns False if unable to get a meal
+    #Returns the ID of a random meal that fits the macro requirements.
+    #Returns False if unable to get a meal.
     url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByNutrients"
     querystring = {"limitLicense":"false","minProtein":macros["minProtein"],"maxProtein":macros["maxProtein"],
     "minCalories":macros["minCalories"],"maxCalories":macros["maxCalories"],"maxSodium":macros["sodium"],
     "maxSugar":macros["sugar"]}
     headers = {
-	"X-RapidAPI-Key": "",
+	"X-RapidAPI-Key": os.environ.get("APIKEY"),
 	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
     }
+
     response = requests.request("GET", url, headers=headers, params=querystring)
 
     if (response.status_code != 200):
-        print("Invalid request; status code:", response.status_code)
+        print("Invalid request; status code:"
+        , response.status_code)
         print("Try changing your macro requirements.\n")
         return False
 
-    randomRecipe = random.randint(0, len(response.json()) - 1)
-    id=response.json()[randomRecipe]["id"]
+    id = -1
+    try:
+        randomRecipe = random.randint(0, len(response.json()) - 1)
+        id=response.json()[randomRecipe]["id"]
+    except:
+        print("No recipe was found")
+
     return id
+
+
 
 
 def getRecipeInfo(id):
@@ -73,13 +69,17 @@ def getRecipeInfo(id):
     querystring = {"includeNutrition":"true"}
 
     headers = {
-	   "X-RapidAPI-Key": "",
+	   "X-RapidAPI-Key": os.environ.get("APIKEY"),
 	   "X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
     }
 
     response = requests.request("GET", url, headers=headers, params=querystring).json()
 
+    print(response)
+
     return response
+
+
 
 
 def displayRecipeInfo(response):
@@ -100,19 +100,3 @@ def displayRecipeInfo(response):
             print("Step ", i, ": ", steps[i]["step"])
     else:
         print("No steps are supported for this recipe.")
-
-
-
-def main():
-    id = False
-    while id == False:
-        macros = prompt()
-        id = getMealID(macros)
-
-    response = getRecipeInfo(id)
-    displayRecipeInfo(response)
-
-
-
-if __name__ == '__main__':
-    main()

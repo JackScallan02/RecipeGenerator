@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Recipe Generator</title>
+
+{% endblock %}
+
+{% block body %}
+<div id="title-div">
+  <h1> Recipe Generator </h1>
+</div>
+
+
+<div class="description-div">
+  {% if recipe.title|length < 1 %}
+  <h4> No recipe was able to be found. Try adjusting your macros! </h4>
+  {% else %}
+  <h4> {{ recipe.title }} </h4>
+  <a href="{{ recipe.url }}">Link to recipe</a>
+  {% endif %}
+</div>
+
+{% if recipe.img|length > 0 %}
+<img id="recipe-img" src="{{ recipe.img }}"></img>
+{% endif %}
+
+
+{% if recipe.ingredients.name|length > 0 %}
+<h4 class="description-div"> Ingredients </h4>
+
+<div id="ingredient-div">
+    <table>
+      <thead>
+        <tr>
+          <th style="padding-right: 100px"> Ingredient </th>
+          <th> Quantity </th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for i in range(recipe.ingredients.name|length) %}
+        <tr>
+          <td style="padding-right: 100px">{{ recipe.ingredients.name[i] }} </td>
+          <td>{{ recipe.ingredients.quantity[i] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% else %}
+  {% if recipe.title|length > 0 %}
+    <h4 class="description-div"> No ingredients are supported for this recipe. </h4>
+  {% endif %}
+{% endif %}
+
+
+{% if recipe.instructions|length > 0 %}
+<h4 class="description-div"> Instructions </h4>
+
+<div id ="instructions-div">
+  <ol>
+    {% for instruction in recipe.instructions %}
+    <li>{{ instruction }}</li>
+    {% endfor %}
+  </ol>
+</div>
+{% else %}
+  {% if recipe.title|length > 0 %}
+    <h4 class="description-div"> No instructions are supported for this recipe. </h4>
+  {% endif %}
+{% endif %}
+
+{% endblock %}

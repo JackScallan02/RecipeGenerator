@@ -9,7 +9,7 @@
 <div id="title-div">
   <h1> Recipe Generator </h1>
 </div>
-<div id="description-div">
+<div class="description-div">
   <h4> Enter in your preferences and a random recipe will be generated!
 </div>
 <form action="/" method="POST">
@@ -30,6 +30,8 @@
 
   <label>Maximum sugar:</label>
   <input type="text" name="maxSugar" id="maxSugar">
+
   <input type="submit" value="Submit">
 </form>
+<p id="warning-label" style="visibility:{{ visibility }}">Make sure to only enter integers as your constraints!</p>
 {% endblock %}

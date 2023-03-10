@@ -3,7 +3,6 @@ body {
 }
 
 p {
-  display: inline;
 }
 
 h1 {
@@ -21,6 +20,16 @@ form {
   min-width: 300px;
 }
 
+table {
+  display: inline-block;
+  text-align: center;
+}
+
+ol {
+  display: inline-block;
+  text-align: left;
+}
+
 #title-div {
   margin: auto;
   width: 100%;
@@ -31,7 +40,7 @@ form {
   border-bottom: 10px solid darkgray;
 }
 
-#description-div {
+.description-div {
 
   margin: auto;
   margin-top: 60px;
@@ -64,4 +73,38 @@ input[type=submit] {
   background-color: #62c9fc;
   color: white;
 
+}
+input[type=submit]:hover {
+  background-color: #73b6f0;
+}
+
+#warning-label {
+  margin: auto;
+  text-align: center;
+  width: 100%;
+  color: crimson;
+}
+
+#recipe-img {
+  display: block;
+  margin: auto;
+  margin-bottom: 15px;
+  width: 30%;
+}
+
+#ingredients {
+  margin: auto;
+  width: 50%;
+}
+
+#instructions {
+  margin: auto;
+  width: 50%;
+}
+
+#ingredient-div {
+  text-align: center;
+}
+#instructions-div {
+  text-align: center;
 }
