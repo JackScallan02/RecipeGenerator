@@ -33,5 +33,6 @@
 
   <input type="submit" value="Submit">
 </form>
-<p id="warning-label" style="visibility:{{ visibility }}">Make sure to only enter integers as your constraints!</p>
+<p class="warning-label" style="visibility:{{ warnVisibility }}">Make sure to only enter integers as your constraints!</p>
+<p class="warning-label" style="visibility:{{ errVisibility }}">Error: Got status code of {{ error }}</p>
 {% endblock %}

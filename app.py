@@ -25,9 +25,9 @@ def index():
 
         if not validateMacros(macros):
             print("Invalid macros")
-            return render_template('index.html',visibility="visible")
+            return render_template('index.html',visibility="visible",errVisibility="hidden")
         else:
-            id = getMealID(macros)
+            id, responseCode = getMealID(macros)
             title = ""
             img = ""
             url = ""
@@ -35,10 +35,16 @@ def index():
             ingredientQuantityList = []
             instructionsList = []
 
-            if id == -1: #Recipe was unable to be found
-                recipe = json.dumps({"title": title, "img":img, "ingredients": {"name":ingredientNameList, "quantity":ingredientQuantityList}, "instructions":instructionsList, "url":url})
+            if id == -1:
+                print("HERE 1")
+                return render_template('index.html',warnVisibility="visible", errVisibility="hidden")
+            if id == -2:
+                print("HERE 2")
+                return render_template('index.html', warnVisibility="hidden", errVisibility="visible",error=responseCode)
             else:
                 response = getRecipeInfo(id)
+
+                print(response)
                 title = response["title"]
                 img = response["image"]
                 ingredients = response["extendedIngredients"]
@@ -65,7 +71,7 @@ def index():
             return redirect(url_for('.showRecipe', recipe=recipe))
 
     else:
-        return render_template('index.html',visibility="hidden")
+        return render_template('index.html', warnVisibility="hidden", errVisibility="hidden")
 
 
 

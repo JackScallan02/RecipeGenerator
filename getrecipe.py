@@ -32,7 +32,7 @@ def validateMacros(macros):
 
 def getMealID(macros):
     #Returns the ID of a random meal that fits the macro requirements.
-    #Returns False if unable to get a meal.
+    #Returns -1 if unable to get a meal.
     url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByNutrients"
     querystring = {"limitLicense":"false","minProtein":macros["minProtein"],"maxProtein":macros["maxProtein"],
     "minCalories":macros["minCalories"],"maxCalories":macros["maxCalories"],"maxSodium":macros["sodium"],
@@ -41,23 +41,23 @@ def getMealID(macros):
 	"X-RapidAPI-Key": os.environ.get("APIKEY"),
 	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
     }
+    print("os.environ: ", os.environ)
+    print("KEY: ", os.environ.get("APIKEY"))
 
     response = requests.request("GET", url, headers=headers, params=querystring)
 
     if (response.status_code != 200):
-        print("Invalid request; status code:"
-        , response.status_code)
-        print("Try changing your macro requirements.\n")
-        return False
+        print("Invalid request; status code:", response.status_code)
+        return -2, response.status_code
 
-    id = -1
+    id = -1,response.status_code
     try:
         randomRecipe = random.randint(0, len(response.json()) - 1)
         id=response.json()[randomRecipe]["id"]
     except:
         print("No recipe was found")
 
-    return id
+    return id,response.status_code
 
 
 
@@ -74,8 +74,6 @@ def getRecipeInfo(id):
     }
 
     response = requests.request("GET", url, headers=headers, params=querystring).json()
-
-    print(response)
 
     return response
 

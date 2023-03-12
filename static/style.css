@@ -78,7 +78,7 @@ input[type=submit]:hover {
   background-color: #73b6f0;
 }
 
-#warning-label {
+.warning-label {
   margin: auto;
   text-align: center;
   width: 100%;
