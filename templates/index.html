@@ -35,4 +35,11 @@
 </form>
 <p class="warning-label" style="visibility:{{ warnVisibility }}">Make sure to only enter integers as your constraints!</p>
 <p class="warning-label" style="visibility:{{ errVisibility }}">Error: Got status code of {{ error }}</p>
+
+<form action="/get-suggestion" method="POST">
+  <center>
+    <input type="submit" style="width:40%; background: gray" value="Get suggestion">
+  </center>
+</form>
+
 {% endblock %}

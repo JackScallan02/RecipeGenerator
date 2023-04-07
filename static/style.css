@@ -108,3 +108,40 @@ input[type=submit]:hover {
 #instructions-div {
   text-align: center;
 }
+
+
+.rating {
+  display: inline-block;
+  position: relative;
+  height: 1em;
+  font-size: 1em;
+  direction: rtl; /* flip the order of the stars */
+}
+
+.rating input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.rating label {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin: 0 0.1em;
+  cursor: pointer;
+}
+
+.rating label:before {
+  content: "\2605"; /* Unicode character for a star */
+  font-size: 2em;
+  line-height: 1em;
+  color: #ddd;
+}
+
+.rating input:checked ~ label:before,
+.rating label:hover:before {
+  color: #FFC107; /* yellow color for selected and hovered stars */
+}

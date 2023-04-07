@@ -2,11 +2,10 @@ from flask import Flask, render_template, request, redirect, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 import json
 from getrecipe import *
-
+#Source .env if error code 401
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.secret_key = "super secret key"
-db = SQLAlchemy(app)
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -36,10 +35,10 @@ def index():
             instructionsList = []
 
             if id == -1:
-                print("HERE 1")
+                #Error finding a recipe
                 return render_template('index.html',warnVisibility="visible", errVisibility="hidden")
             if id == -2:
-                print("HERE 2")
+                #Error in HTML request
                 return render_template('index.html', warnVisibility="hidden", errVisibility="visible",error=responseCode)
             else:
                 response = getRecipeInfo(id)
@@ -81,6 +80,13 @@ def showRecipe():
     recipe = session['recipe']
     return render_template('recipe.html', recipe=json.loads(recipe))
 
+
+@app.route('/get-suggestion', methods=['POST'])
+def get_suggestion():
+    #suggestedRecipe = getSuggestedRecipe()
+    suggestedRecipe = ""
+    #return render_template('suggestion.html', suggestedRecipe = json.loads(suggestedRecipe))
+    return render_template('suggestion.html', suggestedRecipe = suggestedRecipe)
 
 if __name__ == "__main__":
     app.run(debug=True)
