@@ -9,9 +9,6 @@ from getrecipe import *
 import time
 
 
-
-
-
 def getRandomRecipe():
     #Returns id of a random recipe
     url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random"
@@ -69,18 +66,3 @@ def suggestRecipe(macros, id):
         time.sleep(2)
 
     return id
-
-    #Gets the predicted user rating given a recipe
-
-
-
-
-#id = getRandomRecipe()
-#macros = getMacrosFromRecipe(id)
-#newID = suggestRecipe(macros, id)
-
-#mse = mean_squared_error(y_test, y_prediction)
-#rmse = np.sqrt(mse)
-#rmspe = rmse / np.mean(y_test) * 100
-
-#print(rmspe)
