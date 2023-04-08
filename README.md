@@ -14,4 +14,4 @@ A python script called `getrecipe.py` contains methods that retrieve the recipe 
 
 Finally, upon retrieval of the recipe, I utilized Jinja2 to display the recipe information to the user, including the image, link to the website, required ingredients and their respective quantities, and step-by-step instructions.
 
-To get a suggested recipe, I utilized scikit-learn to implement linear regression by reading from a csv file using Pandas, which contains past user ratings. For example, if a user rated a recipe a 5, the csv file would contain the macronutrient information as well as the rating.
+To get a suggested recipe, I utilized Scikit-learn to implement linear regression by reading from a csv file using Pandas, which contains past user ratings. For example, if a user rated a recipe a 5, the csv file would contain the macronutrient information as well as the rating.
