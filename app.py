@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 import json
 from getrecipe import *
+from suggest import *
 #Source .env if error code 401
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -83,10 +84,38 @@ def showRecipe():
 
 @app.route('/get-suggestion', methods=['POST'])
 def get_suggestion():
-    #suggestedRecipe = getSuggestedRecipe()
-    suggestedRecipe = ""
-    #return render_template('suggestion.html', suggestedRecipe = json.loads(suggestedRecipe))
-    return render_template('suggestion.html', suggestedRecipe = suggestedRecipe)
+    id = getRandomRecipe()
+    macros = getMacrosFromRecipe(id)
+    newID = suggestRecipe(macros, id)
+    response = getRecipeInfo(id)
+
+    ingredientNameList = []
+    ingredientQuantityList = []
+    instructionsList = []
+
+    title = response["title"]
+    img = response["image"]
+    ingredients = response["extendedIngredients"]
+    url = response["sourceUrl"]
+
+    for i in range(len(ingredients)):
+        ingredientNameList.append(ingredients[i]["name"])
+        ingredientQuantityList.append(str(ingredients[i]["amount"]) + " " + ingredients[i]["unit"])
+
+    if (response["analyzedInstructions"]):
+        instructions = response["analyzedInstructions"]
+        steps = response["analyzedInstructions"][0]["steps"]
+
+        for i in range(len(steps)):
+            instructionsList.append(steps[i]["step"])
+    else:
+        print("No steps are supported for this recipe.")
+
+
+
+    recipe = json.dumps({"title": title, "img":img, "ingredients": {"name":ingredientNameList, "quantity":ingredientQuantityList}, "instructions":instructionsList, "url":url})
+    session['recipe'] = recipe
+    return redirect(url_for('.showRecipe', recipe=recipe))
 
 if __name__ == "__main__":
     app.run(debug=True)

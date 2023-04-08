@@ -9,21 +9,21 @@ We want to generate 100000 data points.
 10000 will be randomly distributed.
 '''
 
-with open('preferences.csv', mode='w', newline='') as f:
+with open('ratings.csv', mode='w', newline='') as f:
     writer = csv.writer(f, delimiter=',')
 
     #Generate 90% normally distributed data
     #minProtein, maxProtein, minCalories, maxCalories, maxSugar, maxSodium
-    mu = [15, 50, 300, 600, 20, 300]
-    sigma = np.ones(6)
+    mu = [(15 + 50)/2, (300 + 600)/2, 20, 300]
+    sigma = np.ones(4)
 
-    data = np.random.normal(loc=mu, scale=sigma, size=(90000, 6)).astype(int)
+    data = np.random.normal(loc=mu, scale=sigma, size=(90000, 4)).astype(int)
     for row in data:
         writer.writerow(np.append(row, random.randint(3, 5)))
 
     data = []
     for i in range(10000):
-        data.append([random.randint(0, 50), random.randint(20, 70), random.randint(0, 700), random.randint(100, 2000), random.randint(10, 70), random.randint(300, 2000), random.randint(1, 5)])
+        data.append([(random.randint(0, 50) + random.randint(20, 70))/2, (random.randint(0, 700) + random.randint(100, 2000))/2, random.randint(10, 70), random.randint(300, 2000), random.randint(1, 5)])
 
     #Generate 10% random data
     for row in data:
